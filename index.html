@@ -128,7 +128,7 @@
     ];
 
     // ==========================================
-    // DATABASE SYNCHRONISERING (Opdateret med din nye bucket)
+    // DATABASE SYNCHRONISERING
     // ==========================================
     const DB_URL = "https://kvdb.io/2gdonfJCrAEytd32SZQvDc/claimed_items";
     let claimedItems = [];
@@ -136,24 +136,36 @@
     async function loadStatus() {
         try {
             const response = await fetch(DB_URL);
-            if (response.ok) {
-                const data = await response.json();
-                claimedItems = Array.isArray(data) ? data : [];
+            if (response.status === 404) {
+                // Helt normalt hvis databasen er helt ny og tom
+                claimedItems = [];
+            } else if (response.ok) {
+                const text = await response.text();
+                claimedItems = text ? JSON.parse(text) : [];
             }
-        } catch (e) { console.log("Starter med tom liste."); }
+        } catch (e) { 
+            console.log("Kunne ikke hente gemte data:", e); 
+        }
         renderList();
     }
 
     async function saveStatus(id, isChecked) {
         if (isChecked) { if (!claimedItems.includes(id)) claimedItems.push(id); }
         else { claimedItems = claimedItems.filter(item => item !== id); }
+        
         try {
-            await fetch(DB_URL, {
+            const response = await fetch(DB_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(claimedItems)
+                body: JSON.stringify(claimedItems) // Ingen headers for at undgå CORS-fejl
             });
-        } catch (e) { alert("Fejl ved gemning. Prøv igen."); loadStatus(); }
+            
+            if (!response.ok) {
+                throw new Error("Serverfejl kode: " + response.status);
+            }
+        } catch (e) { 
+            alert("Kunne ikke gemme reservationen: " + e.message); 
+            await loadStatus(); // Ruller tilbage i UI hvis det fejler
+        }
     }
 
     function renderList() {
@@ -184,12 +196,12 @@
                 if (checked) {
                     if (confirm("Vil du reservere '" + onske.title + "'?")) {
                         await saveStatus(onske.id, true);
-                        loadStatus();
+                        renderList();
                     } else { e.target.checked = false; }
                 } else {
                     if (confirm("Vil du fjerne reservationen på '" + onske.title + "'?")) {
                         await saveStatus(onske.id, false);
-                        loadStatus();
+                        renderList();
                     } else { e.target.checked = true; }
                 }
             });
