@@ -51,7 +51,7 @@
 <div class="container">
     <header>
         <h1>Claras Ønskeliste - 1 år</h1>
-        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det nedenfor</p>
+        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det som "Reserveret" nedenfor, så andre ikke køber det samme. Siden opdaterer live!</p>
     </header>
     <div id="loading" class="loading">Henter ønsker...</div>
     <div id="wish-list" class="wish-list" style="display: none;"></div>
@@ -62,110 +62,34 @@
     // CLARAS ØNSKER
     // ==========================================================
     const ONSKER = [
-        {
-            id: "1",
-            title: "Bog: Ronja Røverdatter",
-            price: "",
-            description: "",
-            url: "https://www.saxo.com/dk/ronja-roeverdatter_astrid-lindgren_indbundet_9788702058048"
-        },
-        {
-            id: "2",
-            title: "Bog: Peter Plys - Den komplette samling",
-            price: "",
-            description: "",
-            url: "https://www.saxo.com/dk/peter-plys-den-komplette-samling-af-fortaellinger-og-digte-jubilaeumsudgave-med-kassette_bog_9788702445466"
-        },
-        {
-            id: "3",
-            title: "Sansegynge.dk original udendørs gynge",
-            price: "",
-            description: "",
-            url: "https://www.sansegynge.dk/produkt/sansegynge-udendoers/"
-        },
-        {
-            id: "4",
-            title: "Stor Regnbue i træ fra Grimms",
-            price: "",
-            description: "12 dele, regnbuefarve",
-            url: ""
-        },
-        {
-            id: "5",
-            title: "Magna-tiles",
-            price: "",
-            description: "",
-            url: ""
-        },
-        {
-            id: "6",
-            title: "De første Farvekridt",
-            price: "",
-            description: "F.eks Carioca baby Teddy farvekridt eller farveblokke i bivoks",
-            url: ""
-        },
-        {
-            id: "7",
-            title: "Fjällräven Kånken Mini - Ox Red",
-            price: "",
-            description: "",
-            url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING"
-        },
-        {
-            id: "8",
-            title: "Kasse/opbevaring til Claras legetøj",
-            price: "",
-            description: "",
-            url: ""
-        },
-        {
-            id: "9",
-            title: "Tilskud til gyngestativ",
-            price: "",
-            description: "",
-            url: ""
-        }
+        { id: "1", title: "Bog: Ronja Røverdatter", price: "", description: "", url: "https://www.saxo.com/dk/ronja-roeverdatter_astrid-lindgren_indbundet_9788702058048" },
+        { id: "2", title: "Bog: Peter Plys - Den komplette samling", price: "", description: "", url: "https://www.saxo.com/dk/peter-plys-den-komplette-samling-af-fortaellinger-og-digte-jubilaeumsudgave-med-kassette_bog_9788702445466" },
+        { id: "3", title: "Sansegynge.dk original udendørs gynge", price: "", description: "", url: "https://www.sansegynge.dk/produkt/sansegynge-udendoers/" },
+        { id: "4", title: "Stor Regnbue i træ fra Grimms", price: "", description: "12 dele, regnbuefarve", url: "" },
+        { id: "5", title: "Magna-tiles", price: "", description: "", url: "" },
+        { id: "6", title: "De første Farvekridt", price: "", description: "F.eks Carioca baby Teddy farvekridt eller farveblokke i bivoks", url: "" },
+        { id: "7", title: "Fjällräven Kånken Mini - Ox Red", price: "", description: "", url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING" },
+        { id: "8", title: "Kasse/opbevaring til Claras legetøj", price: "", description: "", url: "" },
+        { id: "9", title: "Tilskud til gyngestativ", price: "", description: "", url: "" }
     ];
 
     // ==========================================================
-    // DATABASE KONFIGURATION
+    // NPOINT.IO DATABASE KONFIGURATION
     // ==========================================================
-    const BUCKET_ID = "2gdonfJCrAEytd32SZQvDc";
-    const DB_SECRET = "1hhFYOjzA4#Q"; 
-    const DB_URL = `https://kvdb.io/${BUCKET_ID}/claimed_items`;
-
-    // Håndterer netværksindstillinger og fjerner headers ved GET for at undgå CORS-fejl
-    function getFetchOptions(method, bodyData = null) {
-        const options = { method: method };
-        
-        if (method === 'GET') {
-            return options; // Helt ren anmodning uden headers ved load
-        }
-
-        const headers = {};
-        if (DB_SECRET && DB_SECRET.trim() !== "") {
-            headers['X-KVDB-Secret'] = DB_SECRET;
-        }
-
-        if (bodyData) {
-            options.body = bodyData;
-        }
-
-        options.headers = headers;
-        return options;
-    }
+    const BIN_ID = "a48b4396df8d9742ec3f"; 
+    const DB_URL = `https://api.npoint.io/${BIN_ID}`;
+    let claimedItems = [];
 
     async function loadStatus() {
         try {
-            const response = await fetch(DB_URL, getFetchOptions('GET'));
-            if (response.status === 404) {
-                claimedItems = [];
-            } else if (response.ok) {
-                const text = await response.text();
-                claimedItems = text ? JSON.parse(text) : [];
+            const response = await fetch(DB_URL);
+            if (response.ok) {
+                const data = await response.json();
+                claimedItems = Array.isArray(data) ? data : [];
             }
         } catch (e) { 
-            console.log("Kunne ikke hente gemte data:", e); 
+            console.log("Kunne ikke hente gemte data, starter tom:", e); 
+            claimedItems = [];
         }
         renderList();
     }
@@ -175,13 +99,17 @@
         else { claimedItems = claimedItems.filter(item => item !== id); }
         
         try {
-            const response = await fetch(DB_URL, getFetchOptions('POST', JSON.stringify(claimedItems)));
+            const response = await fetch(DB_URL, {
+                method: 'PUT', // PUT overskriver hele JSON-filen korrekt på npoint.io
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(claimedItems)
+            });
             
             if (!response.ok) {
-                throw new Error("Serverfejl kode: " + response.status);
+                throw new Error("Fejlkode: " + response.status);
             }
         } catch (e) { 
-            alert("Kunne ikke gemme reservationen. Fejl: " + e.message); 
+            alert("Kunne ikke gemme reservationen: " + e.message); 
             await loadStatus(); 
         }
     }
