@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Skjuler siden fra Google og andre søgemaskiner -->
     <meta name="robots" content="noindex, nofollow">
     
     <title>Claras Ønskeliste - 1 år</title>
@@ -70,7 +69,9 @@
         { id: "6", title: "De første Farvekridt", price: "", description: "F.eks Carioca baby Teddy farvekridt eller farveblokke i bivoks", url: "" },
         { id: "7", title: "Fjällräven Kånken Mini - Ox Red", price: "", description: "", url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING" },
         { id: "8", title: "Kasse/opbevaring til Claras legetøj", price: "", description: "", url: "" },
-        { id: "9", title: "Tilskud til gyngestativ", price: "", description: "", url: "" }
+        { id: "9", title: "Tilskud til gyngestativ", price: "", description: "", url: "" },
+        { id: "10", title: "Junior dyne helårs og sengetøj hertil", price: "", description: "", url: "" },
+        { id: "11", title: "Pine Cone Foldemadras", price: "", description: "", url: "https://www.kids-world.dk/pine-cone-foldemadras-45x140-cm-triangle-happy-play-sand-p-242270.html" }
     ];
 
     // ==========================================================
@@ -130,7 +131,7 @@
                 <div class="wish-actions">
                     ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Find online ↗</a>` : '<span></span>'}
                     <label class="checkbox-container">
-                        <span class="status-badge">${isClaimed ? 'Reservered' : 'Åben'}</span>
+                        <span class="status-badge">${isClaimed ? 'Reserveret' : 'Åben'}</span>
                         <input type="checkbox" data-id="${onske.id}" ${isClaimed ? 'checked' : ''}>
                     </label>
                 </div>
