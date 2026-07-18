@@ -29,10 +29,10 @@
         .wish-list { display: flex; flex-direction: column; gap: 15px; }
         .wish-item { border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: var(--card-bg); }
         .wish-item.claimed { background-color: var(--claimed-bg); border-color: #e2e8f0; }
-        .wish-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+        .wish-header { display: flex; flex-direction: column; gap: 4px; }
         .wish-title { font-weight: 600; font-size: 16px; color: var(--text-main); }
         .wish-item.claimed .wish-title { text-decoration: line-through; color: var(--claimed-text); }
-        .wish-price { font-weight: 700; font-size: 14px; color: var(--accent); white-space: nowrap; }
+        .wish-price { font-weight: 500; font-size: 13px; color: var(--text-muted); white-space: nowrap; }
         .wish-item.claimed .wish-price { color: var(--claimed-text); }
         .wish-description { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .wish-item.claimed .wish-description { color: var(--claimed-text); }
@@ -68,7 +68,7 @@
         { id: "4", title: "Stor Regnbue i træ fra Grimms", price: "649 kr.", description: "12 dele, regnbuefarve", url: "https://legeakademiet.dk/regnbue-af-trae-12-dele-1270-82213.html?srsltid=AfmBOop3RNOtsxSL9t4oTvc7ZdkWtYXZQfkFohqcLkP0NmLR8tbPyZHR1_g" },
         { id: "5", title: "Magna-tiles", price: "", description: "", url: "" },
         { id: "6", title: "De første Farvekridt", price: "", description: "F.eks Carioca baby Teddy farvekridt eller farveblokke i bivoks", url: "" },
-        { id: "7", title: "Fjällräven Kånken Mini - Ox Red", price: "ca. 549 kr.", description: "", url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING" },
+        { id: "7", title: "Fjällräven Kånken Mini - Ox Red", price: "549 kr.", description: "", url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING" },
         { id: "8", title: "Kasse/opbevaring til Claras legetøj", price: "", description: "", url: "" },
         { id: "9", title: "Tilskud til gyngestativ", price: "", description: "", url: "" },
         { id: "10", title: "Junior dyne helårs og sengetøj hertil", price: "", description: "", url: "" },
@@ -126,7 +126,7 @@
             itemDiv.innerHTML = `
                 <div class="wish-header">
                     <span class="wish-title">${onske.title}</span>
-                    <span class="wish-price">${onske.price}</span>
+                    ${onske.price ? `<span class="wish-price">${onske.price}</span>` : ''}
                 </div>
                 ${onske.description ? `<p class="wish-description">${onske.description}</p>` : ''}
                 <div class="wish-actions">
