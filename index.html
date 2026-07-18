@@ -76,7 +76,7 @@
     // ==========================================================
     // NEW NPOINT.IO DATABASE CONFIGURATION
     // ==========================================================
-    const BIN_ID = "INDSÆT_DIT_NPOINT_BIN_ID_HER"; 
+    const BIN_ID = "a48b4396df8d9742ec3f";
     const DB_URL = `https://api.npoint.io/${BIN_ID}`;
     let claimedItems = [];
 
@@ -130,7 +130,7 @@
                 <div class="wish-actions">
                     ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Find online ↗</a>` : '<span></span>'}
                     <label class="checkbox-container">
-                        <span class="status-badge">${isClaimed ? 'Reserveret ✔' : 'Åben'}</span>
+                        <span class="status-badge">${isClaimed ? 'Reservered' : 'Åben'}</span>
                         <input type="checkbox" data-id="${onske.id}" ${isClaimed ? 'checked' : ''}>
                     </label>
                 </div>
