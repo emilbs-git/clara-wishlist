@@ -59,7 +59,8 @@
 
 <script>
     // ==========================================================
-    // DINE ØNSKER MED LINKS FRA DIT SHEET
+    // DINE ØNSKER 
+    // Links er fjernet og sat til "" – indsæt kun URL hvis det ønskes.
     // ==========================================================
     const ONSKER = [
         {
@@ -67,56 +68,56 @@
             title: "Bog: Ronja Røverdatter",
             price: "",
             description: "",
-            url: "https://www.bog-ide.dk"
+            url: ""
         },
         {
             id: "2",
             title: "Bog: Peter Plys - Den komplette samling",
             price: "",
             description: "",
-            url: "https://www.bog-ide.dk"
+            url: ""
         },
         {
             id: "3",
             title: "Sansegynge.dk original udendørs gynge",
             price: "",
             description: "",
-            url: "https://sansegynge.dk"
+            url: ""
         },
         {
             id: "4",
             title: "Stor Regnbue i træ fra Grimms",
             price: "",
             description: "12 dele, regnbuefarve",
-            url: "https://www.lirumlarumleg.dk"
+            url: ""
         },
         {
             id: "5",
             title: "Magna-tiles",
             price: "",
             description: "",
-            url: "https://www.proshop.dk"
+            url: ""
         },
         {
             id: "6",
             title: "De første Farvekridt",
             price: "",
             description: "F.eks Carioca baby Teddy farvekridt eller farveblokke i bivoks",
-            url: "https://www.legeakademiet.dk"
+            url: ""
         },
         {
             id: "7",
             title: "Fjällräven Kånken Mini - Ox Red",
             price: "",
             description: "",
-            url: "https://www.friluftsland.dk"
+            url: ""
         },
         {
             id: "8",
             title: "Kasse/opbevaring til Claras legetøj",
             price: "",
             description: "",
-            url: "https://www.ikea.com"
+            url: ""
         },
         {
             id: "9",
@@ -170,9 +171,9 @@
                 </div>
                 ${onske.description ? `<p class="wish-description">${onske.description}</p>` : ''}
                 <div class="wish-actions">
-                    ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Se produktet ↗</a>` : '<span></span>'}
+                    ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Find online ↗</a>` : '<span></span>'}
                     <label class="checkbox-container">
-                        <span class="status-badge">${isClaimed ? 'Reserveret ✔' : 'Åben'}</span>
+                        <span class="status-badge">${isClaimed ? 'Reserveret ✔' : 'Åbent ønske'}</span>
                         <input type="checkbox" data-id="${onske.id}" ${isClaimed ? 'checked' : ''}>
                     </label>
                 </div>
