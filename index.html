@@ -51,7 +51,7 @@
 <div class="container">
     <header>
         <h1>Claras Ønskeliste - 1 år</h1>
-        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det som "Reserveret" nedenfor, så andre ikke køber det samme. Siden opdaterer live!</p>
+        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det nedenfor. </p>
     </header>
     <div id="loading" class="loading">Henter ønsker...</div>
     <div id="wish-list" class="wish-list" style="display: none;"></div>
@@ -74,9 +74,9 @@
     ];
 
     // ==========================================================
-    // NPOINT.IO DATABASE KONFIGURATION
+    // NEW NPOINT.IO DATABASE CONFIGURATION
     // ==========================================================
-    const BIN_ID = "a48b4396df8d9742ec3f"; 
+    const BIN_ID = "INDSÆT_DIT_NPOINT_BIN_ID_HER"; 
     const DB_URL = `https://api.npoint.io/${BIN_ID}`;
     let claimedItems = [];
 
@@ -100,7 +100,7 @@
         
         try {
             const response = await fetch(DB_URL, {
-                method: 'PUT', // PUT overskriver hele JSON-filen korrekt på npoint.io
+                method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(claimedItems)
             });
