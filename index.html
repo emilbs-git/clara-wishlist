@@ -13,7 +13,7 @@
             --card-bg: #ffffff;
             --text-main: #2d3748;
             --text-muted: #718096;
-            --accent: #d53f8c; /* Lyserød/Rose hovedfarve */
+            --accent: #d53f8c; /* Lyserød hovedfarve */
             --accent-hover: #b82771;
             --claimed-bg: #edf2f7;
             --claimed-text: #a0aec0;
@@ -59,8 +59,7 @@
 
 <script>
     // ==========================================================
-    // DINE ØNSKER 
-    // Links er fjernet og sat til "" – indsæt kun URL hvis det ønskes.
+    // CLARAS ØNSKER (Med dine links indsat)
     // ==========================================================
     const ONSKER = [
         {
@@ -68,21 +67,21 @@
             title: "Bog: Ronja Røverdatter",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.saxo.com/dk/ronja-roeverdatter_astrid-lindgren_indbundet_9788702058048"
         },
         {
             id: "2",
             title: "Bog: Peter Plys - Den komplette samling",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.saxo.com/dk/peter-plys-den-komplette-samling-af-fortaellinger-og-digte-jubilaeumsudgave-med-kassette_bog_9788702445466"
         },
         {
             id: "3",
             title: "Sansegynge.dk original udendørs gynge",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.sansegynge.dk/produkt/sansegynge-udendoers/"
         },
         {
             id: "4",
@@ -110,7 +109,7 @@
             title: "Fjällräven Kånken Mini - Ox Red",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING"
         },
         {
             id: "8",
@@ -173,7 +172,7 @@
                 <div class="wish-actions">
                     ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Find online ↗</a>` : '<span></span>'}
                     <label class="checkbox-container">
-                        <span class="status-badge">${isClaimed ? 'Reserveret ✔' : 'Åbent ønske'}</span>
+                        <span class="status-badge">${isClaimed ? 'Reserveret ✔' : 'Åben'}</span>
                         <input type="checkbox" data-id="${onske.id}" ${isClaimed ? 'checked' : ''}>
                     </label>
                 </div>
