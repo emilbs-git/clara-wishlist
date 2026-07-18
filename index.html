@@ -51,7 +51,7 @@
 <div class="container">
     <header>
         <h1>Claras Ønskeliste - 1 år</h1>
-        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det som "Reserveret" nedenfor, så andre ikke køber det samme. Siden opdaterer live!</p>
+        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det nedenfor</p>
     </header>
     <div id="loading" class="loading">Henter ønsker...</div>
     <div id="wish-list" class="wish-list" style="display: none;"></div>
@@ -128,17 +128,21 @@
     ];
 
     // ==========================================================
-    // DATABASE KONFIGURATION (Fuldt integreret)
+    // DATABASE KONFIGURATION
     // ==========================================================
     const BUCKET_ID = "2gdonfJCrAEytd32SZQvDc";
     const DB_SECRET = "1hhFYOjzA4#Q"; 
     const DB_URL = `https://kvdb.io/${BUCKET_ID}/claimed_items`;
 
-    // Genererer korrekte headers inklusiv sikkerhedsnøglen
+    // Håndterer netværksindstillinger og fjerner headers ved GET for at undgå CORS-fejl
     function getFetchOptions(method, bodyData = null) {
         const options = { method: method };
-        const headers = {};
+        
+        if (method === 'GET') {
+            return options; // Helt ren anmodning uden headers ved load
+        }
 
+        const headers = {};
         if (DB_SECRET && DB_SECRET.trim() !== "") {
             headers['X-KVDB-Secret'] = DB_SECRET;
         }
@@ -147,10 +151,7 @@
             options.body = bodyData;
         }
 
-        if (Object.keys(headers).length > 0) {
-            options.headers = headers;
-        }
-
+        options.headers = headers;
         return options;
     }
 
@@ -180,7 +181,7 @@
                 throw new Error("Serverfejl kode: " + response.status);
             }
         } catch (e) { 
-            alert("Kunne ikke gemme reservationen. Tjek din database-adgang. Fejl: " + e.message); 
+            alert("Kunne ikke gemme reservationen. Fejl: " + e.message); 
             await loadStatus(); 
         }
     }
