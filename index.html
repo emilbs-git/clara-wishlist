@@ -7,6 +7,12 @@
     <meta name="robots" content="noindex, nofollow">
     
     <title>Claras Ønskeliste - 1 år</title>
+    
+    <!-- Henter den elegante serif-skrifttype til overskriften -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
     <style>
         :root {
             --bg-color: #fdf8f9;
@@ -23,7 +29,16 @@
         body { background-color: var(--bg-color); color: var(--text-main); padding: 20px 15px; display: flex; justify-content: center; }
         .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; box-shadow: 0 4px 10px -1px rgba(213, 63, 140, 0.08); }
         header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
-        header h1 { font-size: 24px; color: var(--accent); margin-bottom: 8px; }
+        
+        /* Overskrift med ny font, bevarer den lyserøde accent-farve */
+        header h1 { 
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 30px; 
+            font-weight: 500;
+            color: var(--accent); 
+            margin-bottom: 8px; 
+        }
+        
         header p { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .loading { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; }
         .wish-list { display: flex; flex-direction: column; gap: 15px; }
@@ -50,7 +65,7 @@
 
 <div class="container">
     <header>
-        <h1>Claras Ønskeliste - 1 år</h1>
+        <h1>Claras ønsker ...</h1>
         <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det nedenfor. </p>
     </header>
     <div id="loading" class="loading">Henter ønsker...</div>
