@@ -51,7 +51,7 @@
 <div class="container">
     <header>
         <h1>Claras Ønskeliste - 1 år</h1>
-        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det nedenfor</p>
+        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det som "Reserveret" nedenfor, så andre ikke køber det samme. Siden opdaterer live!</p>
     </header>
     <div id="loading" class="loading">Henter ønsker...</div>
     <div id="wish-list" class="wish-list" style="display: none;"></div>
@@ -127,17 +127,37 @@
         }
     ];
 
-    // ==========================================
-    // DATABASE SYNCHRONISERING
-    // ==========================================
-    const DB_URL = "https://kvdb.io/2gdonfJCrAEytd32SZQvDc/claimed_items";
-    let claimedItems = [];
+    // ==========================================================
+    // DATABASE KONFIGURATION (Fuldt integreret)
+    // ==========================================================
+    const BUCKET_ID = "2gdonfJCrAEytd32SZQvDc";
+    const DB_SECRET = "1hhFYOjzA4#Q"; 
+    const DB_URL = `https://kvdb.io/${BUCKET_ID}/claimed_items`;
+
+    // Genererer korrekte headers inklusiv sikkerhedsnøglen
+    function getFetchOptions(method, bodyData = null) {
+        const options = { method: method };
+        const headers = {};
+
+        if (DB_SECRET && DB_SECRET.trim() !== "") {
+            headers['X-KVDB-Secret'] = DB_SECRET;
+        }
+
+        if (bodyData) {
+            options.body = bodyData;
+        }
+
+        if (Object.keys(headers).length > 0) {
+            options.headers = headers;
+        }
+
+        return options;
+    }
 
     async function loadStatus() {
         try {
-            const response = await fetch(DB_URL);
+            const response = await fetch(DB_URL, getFetchOptions('GET'));
             if (response.status === 404) {
-                // Helt normalt hvis databasen er helt ny og tom
                 claimedItems = [];
             } else if (response.ok) {
                 const text = await response.text();
@@ -154,17 +174,14 @@
         else { claimedItems = claimedItems.filter(item => item !== id); }
         
         try {
-            const response = await fetch(DB_URL, {
-                method: 'POST',
-                body: JSON.stringify(claimedItems) // Ingen headers for at undgå CORS-fejl
-            });
+            const response = await fetch(DB_URL, getFetchOptions('POST', JSON.stringify(claimedItems)));
             
             if (!response.ok) {
                 throw new Error("Serverfejl kode: " + response.status);
             }
         } catch (e) { 
-            alert("Kunne ikke gemme reservationen: " + e.message); 
-            await loadStatus(); // Ruller tilbage i UI hvis det fejler
+            alert("Kunne ikke gemme reservationen. Tjek din database-adgang. Fejl: " + e.message); 
+            await loadStatus(); 
         }
     }
 
