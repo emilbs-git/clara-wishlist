@@ -3,31 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Skjuler siden fra Google og andre søgemaskiner -->
     <meta name="robots" content="noindex, nofollow">
     
     <title>Claras Ønskeliste - 1 år</title>
     <style>
         :root {
-            --bg-color: #f8f9fa;
+            --bg-color: #fdf8f9;
             --card-bg: #ffffff;
             --text-main: #2d3748;
             --text-muted: #718096;
-            --accent: #4a7c59;
-            --accent-hover: #385e43;
+            --accent: #d53f8c; /* Lyserød/Rose hovedfarve */
+            --accent-hover: #b82771;
             --claimed-bg: #edf2f7;
             --claimed-text: #a0aec0;
-            --border: #e2e8f0;
+            --border: #f7d6e0;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-main); padding: 20px 15px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; box-shadow: 0 4px 10px -1px rgba(213, 63, 140, 0.08); }
         header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
         header h1 { font-size: 24px; color: var(--accent); margin-bottom: 8px; }
         header p { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .loading { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; }
         .wish-list { display: flex; flex-direction: column; gap: 15px; }
         .wish-item { border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: var(--card-bg); }
-        .wish-item.claimed { background-color: var(--claimed-bg); }
+        .wish-item.claimed { background-color: var(--claimed-bg); border-color: #e2e8f0; }
         .wish-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
         .wish-title { font-weight: 600; font-size: 16px; color: var(--text-main); }
         .wish-item.claimed .wish-title { text-decoration: line-through; color: var(--claimed-text); }
@@ -37,10 +38,11 @@
         .wish-item.claimed .wish-description { color: var(--claimed-text); }
         .wish-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
         .btn-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+        .btn-link:hover { text-decoration: underline; }
         .wish-item.claimed .btn-link { color: var(--claimed-text); pointer-events: none; }
         .checkbox-container { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 500; }
         .checkbox-container input { width: 18px; height: 18px; accent-color: var(--accent); }
-        .status-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; background: #e6fffa; color: #234e52; }
+        .status-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; background: #fff5f7; color: #b82771; }
         .wish-item.claimed .status-badge { background: #e2e8f0; color: #4a5568; }
     </style>
 </head>
@@ -49,7 +51,7 @@
 <div class="container">
     <header>
         <h1>Claras Ønskeliste - 1 år</h1>
-        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det som "Købt" nedenfor, så andre ikke køber det samme. Siden opdaterer live!</p>
+        <p>Her er Claras ønsker. Hvis du køber noget, må du meget gerne markere det som "Reserveret" nedenfor, så andre ikke køber det samme. Siden opdaterer live!</p>
     </header>
     <div id="loading" class="loading">Henter ønsker...</div>
     <div id="wish-list" class="wish-list" style="display: none;"></div>
@@ -57,8 +59,7 @@
 
 <script>
     // ==========================================================
-    // DINE ØNSKER (Hentet automatisk fra dit Google Sheet)
-    // Hvis du vil tilføje pris eller link, kan du gøre det herunder.
+    // DINE ØNSKER MED LINKS FRA DIT SHEET
     // ==========================================================
     const ONSKER = [
         {
@@ -66,56 +67,56 @@
             title: "Bog: Ronja Røverdatter",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.bog-ide.dk"
         },
         {
             id: "2",
             title: "Bog: Peter Plys - Den komplette samling",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.bog-ide.dk"
         },
         {
             id: "3",
             title: "Sansegynge.dk original udendørs gynge",
             price: "",
             description: "",
-            url: ""
+            url: "https://sansegynge.dk"
         },
         {
             id: "4",
             title: "Stor Regnbue i træ fra Grimms",
             price: "",
             description: "12 dele, regnbuefarve",
-            url: ""
+            url: "https://www.lirumlarumleg.dk"
         },
         {
             id: "5",
             title: "Magna-tiles",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.proshop.dk"
         },
         {
             id: "6",
             title: "De første Farvekridt",
             price: "",
             description: "F.eks Carioca baby Teddy farvekridt eller farveblokke i bivoks",
-            url: ""
+            url: "https://www.legeakademiet.dk"
         },
         {
             id: "7",
             title: "Fjällräven Kånken Mini - Ox Red",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.friluftsland.dk"
         },
         {
             id: "8",
             title: "Kasse/opbevaring til Claras legetøj",
             price: "",
             description: "",
-            url: ""
+            url: "https://www.ikea.com"
         },
         {
             id: "9",
@@ -171,7 +172,7 @@
                 <div class="wish-actions">
                     ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Se produktet ↗</a>` : '<span></span>'}
                     <label class="checkbox-container">
-                        <span class="status-badge">${isClaimed ? 'Købt ✔' : 'Kan købes'}</span>
+                        <span class="status-badge">${isClaimed ? 'Reserveret ✔' : 'Åben'}</span>
                         <input type="checkbox" data-id="${onske.id}" ${isClaimed ? 'checked' : ''}>
                     </label>
                 </div>
@@ -181,12 +182,12 @@
             checkbox.addEventListener('change', async (e) => {
                 const checked = e.target.checked;
                 if (checked) {
-                    if (confirm("Vil du markere '" + onske.title + "' som købt?")) {
+                    if (confirm("Vil du reservere '" + onske.title + "'?")) {
                         await saveStatus(onske.id, true);
                         loadStatus();
                     } else { e.target.checked = false; }
                 } else {
-                    if (confirm("Vil du fjerne markeringen som købt?")) {
+                    if (confirm("Vil du fjerne reservationen på '" + onske.title + "'?")) {
                         await saveStatus(onske.id, false);
                         loadStatus();
                     } else { e.target.checked = true; }
