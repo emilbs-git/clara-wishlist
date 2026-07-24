@@ -30,7 +30,7 @@
         .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; box-shadow: 0 4px 10px -1px rgba(213, 63, 140, 0.08); }
         header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
         
-        /* Overskrift med ny font */
+        /* Overskrift med serif font */
         header h1 { 
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 30px; 
@@ -43,7 +43,7 @@
         .loading { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; }
         .wish-list { display: flex; flex-direction: column; gap: 15px; }
         
-        /* Ensartet gap på 6px sikrer samme afstand mellem ALLE elementer i kortet */
+        /* 6px gap mellem hovedsektionerne (Tekstgruppe -> Pris -> Knapper) */
         .wish-item { 
             border: 1px solid var(--border); 
             border-radius: 12px; 
@@ -54,10 +54,19 @@
             background: var(--card-bg); 
         }
         .wish-item.claimed { background-color: var(--claimed-bg); border-color: #e2e8f0; }
+
+        /* Præcis 4px gap mellem titel og beskrivelse */
+        .wish-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .wish-title { font-weight: 600; font-size: 16px; color: var(--text-main); }
         .wish-item.claimed .wish-title { text-decoration: line-through; color: var(--claimed-text); }
         .wish-description { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .wish-item.claimed .wish-description { color: var(--claimed-text); }
+        
         .wish-price { font-weight: 500; font-size: 13px; color: var(--text-muted); white-space: nowrap; }
         .wish-item.claimed .wish-price { color: var(--claimed-text); }
         
@@ -96,7 +105,7 @@
         { id: "7", title: "Fjällräven Kånken Mini (Ox Red)", price: "550 kr.", description: "", url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING" },
         { id: "8", title: "Kasse/opbevaring til legetøj", price: "", description: "", url: "" },
         { id: "9", title: "Tilskud til gyngestativ", price: "", description: "", url: "" },
-        { id: "10", title: "Junior dyne og sengetøj", price: "", description: "Helårs", url: "" },
+        { id: "10", title: "Junior dyne og sengetøj", price: "", description: "Helårsdyne", url: "" },
         { id: "11", title: "Pine Cone Foldemadras", price: "2.500 kr.", description: "", url: "https://www.kids-world.dk/pine-cone-foldemadras-45x140-cm-triangle-happy-play-sand-p-242270.html" },
         { id: "12", title: "Muslingesandkasse", price: "350 kr.", description: "Mørkegrøn", url: "https://www.ude-leg.dk/sandkasse/3277-muslingesandkasse-gron.html" }
     ];
@@ -150,10 +159,11 @@
             const itemDiv = document.createElement('div');
             itemDiv.className = `wish-item ${isClaimed ? 'claimed' : ''}`;
             
-            // Layout: Titel -> Beskrivelse -> Pris -> Handlingsknapper
             itemDiv.innerHTML = `
-                <span class="wish-title">${onske.title}</span>
-                ${onske.description ? `<p class="wish-description">${onske.description}</p>` : ''}
+                <div class="wish-text-group">
+                    <span class="wish-title">${onske.title}</span>
+                    ${onske.description ? `<p class="wish-description">${onske.description}</p>` : ''}
+                </div>
                 ${onske.price ? `<span class="wish-price">${onske.price}</span>` : ''}
                 <div class="wish-actions">
                     ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Find online ↗</a>` : '<span></span>'}
