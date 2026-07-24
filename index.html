@@ -30,7 +30,7 @@
         .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; box-shadow: 0 4px 10px -1px rgba(213, 63, 140, 0.08); }
         header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
         
-        /* Overskrift med ny font, bevarer den lyserøde accent-farve */
+        /* Overskrift med ny font */
         header h1 { 
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 30px; 
@@ -42,16 +42,26 @@
         header p { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .loading { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; }
         .wish-list { display: flex; flex-direction: column; gap: 15px; }
-        .wish-item { border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: var(--card-bg); }
+        
+        /* Ensartet gap på 6px sikrer samme afstand mellem ALLE elementer i kortet */
+        .wish-item { 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 16px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 6px; 
+            background: var(--card-bg); 
+        }
         .wish-item.claimed { background-color: var(--claimed-bg); border-color: #e2e8f0; }
-        .wish-header { display: flex; flex-direction: column; gap: 4px; }
         .wish-title { font-weight: 600; font-size: 16px; color: var(--text-main); }
         .wish-item.claimed .wish-title { text-decoration: line-through; color: var(--claimed-text); }
-        .wish-price { font-weight: 500; font-size: 13px; color: var(--text-muted); white-space: nowrap; }
-        .wish-item.claimed .wish-price { color: var(--claimed-text); }
         .wish-description { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
         .wish-item.claimed .wish-description { color: var(--claimed-text); }
-        .wish-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; }
+        .wish-price { font-weight: 500; font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+        .wish-item.claimed .wish-price { color: var(--claimed-text); }
+        
+        .wish-actions { display: flex; justify-content: space-between; align-items: center; }
         .btn-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
         .btn-link:hover { text-decoration: underline; }
         .wish-item.claimed .btn-link { color: var(--claimed-text); pointer-events: none; }
@@ -88,7 +98,7 @@
         { id: "9", title: "Tilskud til gyngestativ", price: "", description: "", url: "" },
         { id: "10", title: "Junior dyne helårs og sengetøj hertil", price: "", description: "", url: "" },
         { id: "11", title: "Pine Cone Foldemadras", price: "2.500 kr.", description: "", url: "https://www.kids-world.dk/pine-cone-foldemadras-45x140-cm-triangle-happy-play-sand-p-242270.html" },
-        { id: "12", title: "Muslingesandkasse", price: "350kr", description: "Mørkegrøn", url: "https://www.ude-leg.dk/sandkasse/3277-muslingesandkasse-gron.html" }
+        { id: "12", title: "Muslingesandkasse", price: "350 kr.", description: "Mørkegrøn", url: "https://www.ude-leg.dk/sandkasse/3277-muslingesandkasse-gron.html" }
     ];
 
     // ==========================================================
@@ -139,12 +149,12 @@
             const isClaimed = claimedItems.includes(onske.id);
             const itemDiv = document.createElement('div');
             itemDiv.className = `wish-item ${isClaimed ? 'claimed' : ''}`;
+            
+            // Layout: Titel -> Beskrivelse -> Pris -> Handlingsknapper
             itemDiv.innerHTML = `
-                <div class="wish-header">
-                    <span class="wish-title">${onske.title}</span>
-                    ${onske.price ? `<span class="wish-price">${onske.price}</span>` : ''}
-                </div>
+                <span class="wish-title">${onske.title}</span>
                 ${onske.description ? `<p class="wish-description">${onske.description}</p>` : ''}
+                ${onske.price ? `<span class="wish-price">${onske.price}</span>` : ''}
                 <div class="wish-actions">
                     ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Find online ↗</a>` : '<span></span>'}
                     <label class="checkbox-container">
