@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Skjuler siden fra Google og andre søgemaskiner -->
+    <meta name="robots" content="noindex, nofollow">
+    
+    <title>Claras Ønskeliste - 1 år</title>
+    
+    <!-- Henter den elegante serif-skrifttype til overskriften -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #fdf8f9;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --accent: #d53f8c; /* Lyserød hovedfarve */
+            --accent-hover: #b82771;
+            --claimed-bg: #edf2f7;
+            --claimed-text: #a0aec0;
+            --border: #f7d6e0;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-main); padding: 20px 15px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; background: var(--card-bg); padding: 30px 20px; border-radius: 16px; box-shadow: 0 4px 10px -1px rgba(213, 63, 140, 0.08); }
+        header { text-align: center; margin-bottom: 30px; border-bottom: 2px solid var(--border); padding-bottom: 20px; }
+        
+        /* Overskrift med serif font */
+        header h1 { 
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 30px; 
+            font-weight: 500;
+            color: var(--accent); 
+            margin-bottom: 8px; 
+        }
+        
+        header p { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
+        .loading { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; }
+        .wish-list { display: flex; flex-direction: column; gap: 15px; }
+        
+        /* 6px gap mellem hovedgrupperne (Tekstgruppe -> Pris -> Knapper) */
+        .wish-item { 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            padding: 16px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 6px; 
+            background: var(--card-bg); 
+        }
+        .wish-item.claimed { background-color: var(--claimed-bg); border-color: #e2e8f0; }
+
+        /* Præcis 2px gap mellem titel og beskrivelse */
+        .wish-text-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .wish-title { font-weight: 600; font-size: 16px; color: var(--text-main); }
+        .wish-item.claimed .wish-title { text-decoration: line-through; color: var(--claimed-text); }
+        .wish-description { font-size: 14px; color: var(--text-muted); line-height: 1.4; }
+        .wish-item.claimed .wish-description { color: var(--claimed-text); }
+        
+        .wish-price { font-weight: 500; font-size: 13px; color: var(--text-muted); white-space: nowrap; }
+        .wish-item.claimed .wish-price { color: var(--claimed-text); }
+        
+        .wish-actions { display: flex; justify-content: space-between; align-items: center; }
+        .btn-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+        .btn-link:hover { text-decoration: underline; }
+        .wish-item.claimed .btn-link { color: var(--claimed-text); pointer-events: none; }
+        .checkbox-container { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 13px; font-weight: 500; }
+        .checkbox-container input { width: 18px; height: 18px; accent-color: var(--accent); }
+        .status-badge { font-size: 11px; font-weight: 600; text-transform: uppercase; padding: 3px 8px; border-radius: 20px; background: #fff5f7; color: #b82771; }
+        .wish-item.claimed .status-badge { background: #e2e8f0; color: #4a5568; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Claras ønsker</h1>
+        <p>Inspiration til gaver, som vil vække glæde hos den lille fødselar ❤️ Hvis du finder noget på listen, må du meget gerne markere det nedenfor.</p>
+    </header>
+    <div id="loading" class="loading">Henter ønsker...</div>
+    <div id="wish-list" class="wish-list" style="display: none;"></div>
+</div>
+
+<script>
+    // ==========================================================
+    // CLARAS ØNSKER
+    // ==========================================================
+    const ONSKER = [
+        { id: "1", title: "Ronja Røverdatter", price: "210 kr.", description: "Hardback", url: "https://www.saxo.com/dk/ronja-roeverdatter_astrid-lindgren_indbundet_9788702058048" },
+        { id: "2", title: "Peter Plys - Den komplette samling", price: "320 kr.", description: "Hardback", url: "https://www.saxo.com/dk/peter-plys-den-komplette-samling-af-fortaellinger-og-digte-jubilaeumsudgave-med-kassette_bog_9788702445466" },
+        { id: "3", title: "Sansegynge original udendørs", price: "800 kr.", description: "", url: "https://www.sansegynge.dk/produkt/sansegynge-udendoers/" },
+        { id: "4", title: "Stor Regnbue i træ fra Grimms", price: "500 kr.", description: "12 dele, regnbuefarve", url: "https://legeakademiet.dk/regnbue-af-trae-12-dele-1270-82213.html?srsltid=AfmBOop3RNOtsxSL9t4oTvc7ZdkWtYXZQfkFohqcLkP0NmLR8tbPyZHR1_g" },
+        { id: "5", title: "Magna-Tiles klodser", price: "", description: "", url: "https://www.pricerunner.dk/cl/72/Legetoej?man_id=220907&sort=popularity" },
+        { id: "6", title: "De første Farvekridt", price: "", description: "F.eks Carioca baby Teddy farvekridt eller farveblokke i bivoks", url: "" },
+        { id: "7", title: "Fjällräven Kånken Mini (Ox Red)", price: "550 kr.", description: "", url: "https://www.pricerunner.dk/pl/1196-3211192476/Tasker/Fjaellraeven-Kaanken-Mini-Ox-Red-Sammenlign-Priser?sort=PRICE&price=PRICE_WITH_SHIPPING" },
+        { id: "8", title: "Kasse/opbevaring til legetøj", price: "", description: "", url: "" },
+        { id: "9", title: "Tilskud til gyngestativ", price: "", description: "", url: "" },
+        { id: "10", title: "Junior dyne og sengetøj", price: "", description: "Helårsdyne", url: "" },
+        { id: "11", title: "Pine Cone Foldemadras", price: "2.500 kr.", description: "", url: "https://www.kids-world.dk/pine-cone-foldemadras-45x140-cm-triangle-happy-play-sand-p-242270.html" },
+        { id: "12", title: "Muslingesandkasse", price: "350 kr.", description: "Mørkegrøn", url: "https://www.ude-leg.dk/sandkasse/3277-muslingesandkasse-gron.html" }
+    ];
+
+    // ==========================================================
+    // DATABASE CONFIGURATION
+    // ==========================================================
+    const BIN_ID = "a48b4396df8d9742ec3f";
+    const DB_URL = `https://api.npoint.io/${BIN_ID}`;
+    let claimedItems = [];
+
+    async function loadStatus() {
+        try {
+            const response = await fetch(DB_URL);
+            if (response.ok) {
+                const data = await response.json();
+                claimedItems = Array.isArray(data) ? data : [];
+            }
+        } catch (e) { 
+            console.log("Kunne ikke hente gemte data, starter tom:", e); 
+            claimedItems = [];
+        }
+        renderList();
+    }
+
+    async function saveStatus(id, isChecked) {
+        if (isChecked) { if (!claimedItems.includes(id)) claimedItems.push(id); }
+        else { claimedItems = claimedItems.filter(item => item !== id); }
+        
+        try {
+            const response = await fetch(DB_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(claimedItems)
+            });
+            
+            if (!response.ok) {
+                throw new Error("Fejlkode: " + response.status);
+            }
+        } catch (e) { 
+            alert("Kunne ikke gemme reservationen: " + e.message); 
+            await loadStatus(); 
+        }
+    }
+
+    function renderList() {
+        const listContainer = document.getElementById('wish-list');
+        listContainer.innerHTML = '';
+        ONSKER.forEach(onske => {
+            const isClaimed = claimedItems.includes(onske.id);
+            const itemDiv = document.createElement('div');
+            itemDiv.className = `wish-item ${isClaimed ? 'claimed' : ''}`;
+            
+            itemDiv.innerHTML = `
+                <div class="wish-text-group">
+                    <span class="wish-title">${onske.title}</span>
+                    ${onske.description ? `<p class="wish-description">${onske.description}</p>` : ''}
+                </div>
+                ${onske.price ? `<span class="wish-price">${onske.price}</span>` : ''}
+                <div class="wish-actions">
+                    ${onske.url ? `<a href="${onske.url}" target="_blank" class="btn-link">Find online ↗</a>` : '<span></span>'}
+                    <label class="checkbox-container">
+                        <span class="status-badge">${isClaimed ? 'Reserveret' : 'Åben'}</span>
+                        <input type="checkbox" data-id="${onske.id}" ${isClaimed ? 'checked' : ''}>
+                    </label>
+                </div>
+            `;
+
+            const checkbox = itemDiv.querySelector('input[type="checkbox"]');
+            checkbox.addEventListener('change', async (e) => {
+                const checked = e.target.checked;
+                if (checked) {
+                    if (confirm("Vil du reservere '" + onske.title + "'?")) {
+                        await saveStatus(onske.id, true);
+                        renderList();
+                    } else { e.target.checked = false; }
+                } else {
+                    if (confirm("Vil du fjerne reservationen på '" + onske.title + "'?")) {
+                        await saveStatus(onske.id, false);
+                        renderList();
+                    } else { e.target.checked = true; }
+                }
+            });
+            listContainer.appendChild(itemDiv);
+        });
+        document.getElementById('loading').style.display = 'none';
+        listContainer.style.display = 'flex';
+    }
+    window.onload = loadStatus;
+</script>
+</body>
+</html>
